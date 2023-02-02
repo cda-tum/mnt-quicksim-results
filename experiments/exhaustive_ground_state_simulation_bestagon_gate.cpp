@@ -2,11 +2,10 @@
 // Created by Jan Drewniok on 18.01.23.
 //
 
-#include <fiction/algorithms/simulation_sidb/TTS.hpp>
-#include <fiction/algorithms/simulation_sidb/exhaustive_ground_state_simulation.hpp>
-#include <fiction/io/read_sqd_layout.hpp>  // reader for SiDB layouts including surface scan data
-#include <fiction/technology/charge_distribution_surface.hpp>
-#include <fiction/types.hpp>  // pre-defined types suitable for the FCN domain
+#include "fiction/algorithms/simulation_sidb/exhaustive_ground_state_simulation.hpp"
+#include "fiction/io/read_sqd_layout.hpp"  // reader for SiDB layouts including surface scan data
+#include "fiction/technology/charge_distribution_surface.hpp"
+#include "fiction/types.hpp"  // pre-defined types suitable for the FCN domain
 
 #include <array>
 #include <filesystem>
@@ -28,7 +27,7 @@ int main() // NOLINT
 
 
             exgs_stats<sidb_cell_clk_lyt_siqad> stats{};
-            exgs<sidb_cell_clk_lyt_siqad>(chargelyt, params, &stats);
+            exhaustive_ground_state_simulation<sidb_cell_clk_lyt_siqad>(chargelyt, params, &stats);
             stats.report();
         }
     return EXIT_SUCCESS;
