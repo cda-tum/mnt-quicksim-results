@@ -2,13 +2,13 @@
 // Created by Jan Drewniok 01.01.23
 //
 
-#include "fiction/algorithms/simulation_sidb/exhaustive_ground_state_simulation.hpp"
+#include "fiction/algorithms/simulation/sidb/exhaustive_ground_state_simulation.hpp"
 #include "fiction/io/read_sqd_layout.hpp"  // reader for SiDB layouts including surface scan data
 #include "fiction/technology/charge_distribution_surface.hpp"
 #include "fiction/types.hpp"  // pre-defined types suitable for the FCN domain
 #include "fiction_experiments.hpp"
 
-#include <fiction/algorithms/simulation_sidb/time_to_solution.hpp>
+#include <fiction/algorithms/simulation/sidb/time_to_solution.hpp>
 
 #include <fmt/format.h>  // output formatting
 
@@ -54,18 +54,15 @@ int main()  // NOLINT
 
             const auto lyt = read_sqd_layout<sidb_cell_clk_lyt_siqad>(benchmark.string());
 
-            const sidb_simulation_parameters                   params{2, -0.32};
-            charge_distribution_surface<sidb_cell_clk_lyt_siqad> chargelyt{lyt};
-            exgs_stats<sidb_cell_clk_lyt_siqad>                  exgs_stats{};
-            exhaustive_ground_state_simulation<sidb_cell_clk_lyt_siqad>(chargelyt, params, &exgs_stats);
+            const sidb_simulation_parameters params{2, -0.32};
 
             time_to_solution_stats tts_stat{};
-            sim_acc_tts<sidb_cell_clk_lyt_siqad>(chargelyt, exgs_stats, &tts_stat);
+            sim_acc_tts<sidb_cell_clk_lyt_siqad>(lyt, params, &tts_stat);
 
-            simulation_exp(benchmark.string(), mockturtle::to_seconds(exgs_stats.time_total), tts_stat.acc,
+            simulation_exp(benchmark.string(), tts_stat.single_runtime_exhaustive, tts_stat.acc,
                            tts_stat.time_to_solution, tts_stat.mean_single_runtime, std::to_string(lyt.num_cells()));
             db_num.push_back(lyt.num_cells());
-            sum_sr += mockturtle::to_seconds(exgs_stats.time_total);
+            sum_sr += tts_stat.single_runtime_exhaustive;
             sum_sr_quick += tts_stat.mean_single_runtime;
             sum_acc += tts_stat.acc;
             sum_tts += tts_stat.time_to_solution;

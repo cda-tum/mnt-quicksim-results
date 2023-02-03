@@ -2,7 +2,7 @@
 // Created by Jan Drewniok on 01.01.23.
 //
 
-#include "fiction/algorithms/simulation_sidb/quicksim.hpp"
+#include "fiction/algorithms/simulation/sidb/quicksim.hpp"
 #include "fiction/io/read_sqd_layout.hpp"  // reader for SiDB layouts including surface scan data
 #include "fiction/technology/charge_distribution_surface.hpp"
 #include "fiction/types.hpp"  // pre-defined types suitable for the FCN domain
